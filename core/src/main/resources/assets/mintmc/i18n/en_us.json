@@ -3,6 +3,28 @@
     "settings": {
       "enabled": {
         "name": "Enabled"
+      },
+      "copyTextureKey": {
+        "name": "Copy Head Texture",
+        "description": "Copies the texture value of the player head you look at to the clipboard."
+      }
+    },
+    "messages": {
+      "copied": "Head texture copied to the clipboard",
+      "noHead": "You are not looking at a player head",
+      "noTexture": "This head has no texture"
+    },
+    "hudWidgetCategory": {
+      "mintmc": {
+        "name": "Headtool"
+      }
+    },
+    "hudWidget": {
+      "looked_at_head": {
+        "name": "Looked At Head",
+        "line": "Head",
+        "none": "None",
+        "unknown": "Unknown"
       }
     }
   }
