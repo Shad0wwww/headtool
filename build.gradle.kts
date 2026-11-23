@@ -31,7 +31,7 @@ labyMod {
         description = "Shows whose player head you are looking at and copies its texture with a keybind."
         minecraftVersion = "*"
         version = rootProject.version.toString()
-        permission(AddonPermission.FILE_SYSTEM, AddonPermission.EXTERNAL_SERVERS_GET)
+        permission(AddonPermission.CLIPBOARD)
     }
 }
 
