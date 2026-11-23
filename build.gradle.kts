@@ -26,7 +26,7 @@ labyMod {
         namespace = "mintmc"
         displayName = "headtool"
         author = "Magnus"
-        description = ""
+        description = "Shows whose player head you are looking at and copies its texture with a keybind."
         minecraftVersion = "*"
         version = rootProject.version.toString()
     }
