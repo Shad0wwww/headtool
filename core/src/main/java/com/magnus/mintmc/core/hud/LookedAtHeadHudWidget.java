@@ -16,8 +16,14 @@ import net.labymod.api.mojang.GameProfile;
  */
 public class LookedAtHeadHudWidget extends TextHudWidget<TextHudWidgetConfig> {
 
+  private static final Component UNKNOWN =
+      Component.translatable("mintmc.hudWidget.looked_at_head.unknown");
+  private static final Component EDITOR_PREVIEW = Component.text("Notch");
+
   private final HeadtoolAddon addon;
   private TextLine headLine;
+  private String lastUsername;
+  private Component lastNameComponent;
 
   public LookedAtHeadHudWidget(HeadtoolAddon addon) {
     super("looked_at_head");
@@ -38,32 +44,37 @@ public class LookedAtHeadHudWidget extends TextHudWidget<TextHudWidgetConfig> {
   @Override
   public void onTick(boolean isEditorContext) {
     if (isEditorContext) {
-      this.headLine.updateAndFlush(Component.text("Notch"));
+      this.headLine.updateAndFlush(EDITOR_PREVIEW);
       this.headLine.setState(State.VISIBLE);
       return;
     }
 
-    Component name = this.addon.configuration().enabled().get() ? this.findLookedAtHead() : null;
-    if (name == null) {
+    GameProfile profile = this.addon.configuration().enabled().get()
+        ? LookedAtHead.findProfile()
+        : null;
+    if (profile == null) {
       this.headLine.setState(State.HIDDEN);
       return;
     }
 
-    this.headLine.updateAndFlush(name);
+    this.headLine.updateAndFlush(this.nameComponent(profile.getUsername()));
     this.headLine.setState(State.VISIBLE);
   }
 
-  private Component findLookedAtHead() {
-    GameProfile profile = LookedAtHead.findProfile();
-    if (profile == null) {
-      return null;
-    }
-
-    String username = profile.getUsername();
+  /**
+   * Returns the component for the given username, reusing the last one while the name stays the
+   * same so no component is created every tick.
+   */
+  private Component nameComponent(String username) {
     if (username == null || username.isEmpty()) {
-      return Component.translatable("mintmc.hudWidget.looked_at_head.unknown");
+      return UNKNOWN;
     }
 
-    return Component.text(username);
+    if (!username.equals(this.lastUsername)) {
+      this.lastUsername = username;
+      this.lastNameComponent = Component.text(username);
+    }
+
+    return this.lastNameComponent;
   }
 }
